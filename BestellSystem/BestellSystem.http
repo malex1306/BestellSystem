@@ -1,0 +1,6 @@
+@BestellSystem_HostAddress = http://localhost:5163
+
+GET {{BestellSystem_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
