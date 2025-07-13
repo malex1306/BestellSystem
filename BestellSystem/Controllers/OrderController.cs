@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using BestellSystem.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace BestellSystem.Controllers
 {
