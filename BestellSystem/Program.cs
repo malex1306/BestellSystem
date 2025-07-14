@@ -1,4 +1,19 @@
+using BestellSystem.Application.Repositories;
+using BestellSystem.Application.Services;
+using BestellSystem.Infrastructur.Persistence;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IBestellungRepository, InMemoryBestellungRepository>();
+builder.Services.AddScoped<BestellService>();
+builder.Services.AddScoped<PreisPruefService>();
+builder.Services.AddScoped<RabattService>();
+
+builder.Services.AddDbContext<BestellDbContext>(options =>
+    options.UseSqlite("Data Source=bestellungen.deb"));
+
+builder.Services.AddScoped<IBestellungRepository, EfCoreBestellungRepository>();
 
 // Add services to the container.
 

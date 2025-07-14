@@ -11,10 +11,22 @@ namespace BestellSystem.Web.Controllers
     [Route("api/[controller]")]
     public class OrderController : Controller
     {
-        private static IBestellungRepository _repository = new InMemoryBestellungRepository();
-        private static BestellService _service = new BestellService();
-        private static PreisPruefService _preisPruefer = new PreisPruefService();
-        private static RabattService _rabattService = new RabattService();
+        private readonly BestellService _service;
+        private readonly IBestellungRepository _repository;
+        private readonly PreisPruefService _preisPruefer;
+        private readonly RabattService _rabattService;
+
+        public OrderController(
+            BestellService service,
+            IBestellungRepository repository,
+            PreisPruefService preisPruefer,
+            RabattService rabattService)
+        {
+            _service = service;
+            _repository = repository;
+            _preisPruefer = preisPruefer;
+            _rabattService = rabattService;
+        }
 
 
         [HttpGet]

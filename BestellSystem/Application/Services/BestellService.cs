@@ -1,4 +1,5 @@
-﻿using BestellSystem.Domain.Entities;
+﻿using BestellSystem.Application.Repositories;
+using BestellSystem.Domain.Entities;
 using BestellSystem.Domain.ValueObjects;
 using BestellSystem.Dtos;
 
@@ -6,6 +7,12 @@ namespace BestellSystem.Application.Services
 {
     public class BestellService
     {
+        private readonly IBestellungRepository _repository;
+        public BestellService(IBestellungRepository repository)
+        {
+            _repository = repository;
+        }
+
         public Bestellung ErstelleBestellung(CreateOrderDto dto)
         {
           var bestellung = new Bestellung

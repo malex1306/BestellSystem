@@ -1,6 +1,7 @@
-﻿using BestellSystem.Domain.Entities;
+﻿using BestellSystem.Application.Repositories;
+using BestellSystem.Domain.Entities;
 
-namespace BestellSystem.Application.Repositories
+namespace BestellSystem.Infrastructur.Persistence
 {
     public class InMemoryBestellungRepository : IBestellungRepository
     {
