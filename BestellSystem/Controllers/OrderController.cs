@@ -19,15 +19,28 @@ namespace BestellSystem.Controllers
         }
 
         private static BestellService _service = new BestellService();
+        private static PreisPruefService _preisPruefer = new PreisPruefService();
+        private static RabattService _rabattService = new RabattService();
 
         [HttpPost]
         public IActionResult NewOrder([FromBody] CreateOrderDto dto)
         {
             var bestellung = _service.ErstelleBestellung(dto);
+            if (!_preisPruefer.IstGueltig(bestellung))
+            {
+                return BadRequest("Ungültige Einzelpreise in der Bestellung.");
+            }
+
+            var rabatt = _rabattService.BerechneRabatt(bestellung);
+
             bestellung.Id = _orders.Count + 1; // Simulate ID generation
             _orders.Add(bestellung);
-            return Ok(bestellung);
+            return Ok(new
+            {
+                Orginal = bestellung.Gesamtbetrag,
+                Rabatt = rabatt,
+                Bestellung = bestellung
+            });
         }
-
     }
 }
