@@ -1,26 +1,27 @@
-﻿using BestellSystem.Domain.Entities;
+﻿using BestellSystem.Application.Repositories;
+using BestellSystem.Domain.Entities;
 using BestellSystem.Domain.ValueObjects;
 using BestellSystem.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using BestellSystem.Application.Services;
 
-namespace BestellSystem.Controllers
+namespace BestellSystem.Web.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class OrderController : Controller
     {
-        private static List<Bestellung> _orders = new();
+        private static IBestellungRepository _repository = new InMemoryBestellungRepository();
+        private static BestellService _service = new BestellService();
+        private static PreisPruefService _preisPruefer = new PreisPruefService();
+        private static RabattService _rabattService = new RabattService();
+
 
         [HttpGet]
         public IActionResult AllOrders()
         {
-            return Ok(_orders);
+            return Ok(_repository.GetAll());
         }
-
-        private static BestellService _service = new BestellService();
-        private static PreisPruefService _preisPruefer = new PreisPruefService();
-        private static RabattService _rabattService = new RabattService();
 
         [HttpPost]
         public IActionResult NewOrder([FromBody] CreateOrderDto dto)
@@ -33,8 +34,8 @@ namespace BestellSystem.Controllers
 
             var rabatt = _rabattService.BerechneRabatt(bestellung);
 
-            bestellung.Id = _orders.Count + 1; // Simulate ID generation
-            _orders.Add(bestellung);
+            bestellung.Id = _repository.GetAll().Count + 1; 
+            _repository.Add(bestellung);
             return Ok(new
             {
                 Orginal = bestellung.Gesamtbetrag,
